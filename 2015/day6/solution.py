@@ -36,13 +36,42 @@ def parse_instruction(unparsed: str):
     instruction.end = parse_coordinate(end)
     return instruction
 
+def make_matrix(n, m):
+    matrix = [False] * n 
+    for x in range(n):
+        matrix[x] = [False] * m
+    return matrix
+
+def apply_instruction(lights_grid: list[list[bool]], instruction: Instruction):
+    (x1, y1) = instruction.start
+    (x2, y2) = instruction.end
+    for x in range(x1, x2+1):
+        for y in range(y1, y2+1):
+            if instruction.action == Action.TOGGLE:
+                lights_grid[x][y] = not lights_grid[x][y]
+            elif instruction.action == Action.TURN_ON:
+                lights_grid[x][y] = True
+            elif instruction.action == Action.TURN_OFF:
+                lights_grid[x][y] = False
+
+def count_lights_on(lights_grid: list[list[bool]]):
+    flatened_lights_grid = [light for lights in lights_grid for light in lights]
+    counter = 0
+    for light in flatened_lights_grid:
+        if light == True:
+            counter += 1
+    return counter
+
+
 
 def part1():
     print("\n~~~ Part 1 ~~~\n")
-    # TODO: matrices
     with open("input.data", "r") as input_file:
+        matrix = make_matrix(1000, 1000)
         for line in input_file.readlines():
             instruction = parse_instruction(line)
+            apply_instruction(matrix, instruction)
+        print(f"the number of lights on is {count_lights_on(matrix)}")
             
 
 
