@@ -1,8 +1,12 @@
+class UnlinkedNode():
+    def __init__(self, name: str, action: str, dependents: list[str]) -> None:
+        self.dependents = dependents
+        self.action = action
+        self.name = name
 
-class WirePlan():
-    sources: list[str]
-    action: str
-    output: str
+
+def parse_node(unparsed: str) -> UnlinkedNode:
+    pass
 
 
 def part1():
