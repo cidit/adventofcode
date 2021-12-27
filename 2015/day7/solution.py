@@ -1,19 +1,19 @@
-
 """
 map = {key: hash(name), node: {name: str, action:str, deps: list[str]}}
 """
+from pathlib import Path
 from typing import NamedTuple
 
 
-def get_input():
-    with open("input.data", "r") as input_file:
-        return [line.strip() for line in input_file.readlines()]
-
-
 class Node(NamedTuple):
-    name: str
-    what: str
+    name: str = ""
+    what: str = ""
     deps: list[str] = []
+
+
+def get_input():
+    with open(Path(__file__).parent / "input.data", "r") as input_file:
+        return [line.strip() for line in input_file.readlines()]
 
 
 def parse_node(unparsed: str):
@@ -34,22 +34,35 @@ def parse_node(unparsed: str):
     - [NO ACTION]: dependent -> output
     """
 
+    # TODO: refactor this maybe
     tokens = unparsed.split()
     acions_with_two_dependents = "RSHIFT LSHIFT AND OR".split()
-    node = Node()
-    node.name = tokens.pop()
+    name = tokens.pop()
+    tokens.remove("->")
+    what = ""
+    deps = []
     if any(action in tokens for action in acions_with_two_dependents):
-        node.deps.append(tokens[0])
-        node.what = tokens[1]
-        node.deps.append(tokens[2])
+        deps.append(tokens[0])
+        what = tokens[1]
+        deps.append(tokens[2])
     elif "NOT" in tokens:
-        node.what = "NOT"
-        node.deps.append(tokens[1])
+        what = "NOT"
+        deps.append(tokens[1])
     else:
-        node.what = "NO-ACTION"
-        node.deps.append = tokens[0]
-    return node
+        what = "NO-ACTION"
+        deps.append(tokens[0])
 
+    return Node(name=name, what=what, deps=deps)
+
+
+def parse_input(input: list[str]):
+    parsed_nodes = map(parse_node, input)
+    return {node.name: node for node in parsed_nodes}
+
+
+def resolve_node(name: str, nodes: dict[str, Node]):
+    node = dict[name]
+    # TODO: implement this
 
 
 def part1(input: list[str]):
