@@ -1,18 +1,22 @@
 
-
-
 """
 map = {key: hash(name), node: {name: str, action:str, deps: list[str]}}
 """
-
-class Node:
-    def __init__(self, name: str, action: str, deps: list[str]) -> None:
-        self.deps = deps
-        self.action = action
-        self.name = name
+from typing import NamedTuple
 
 
-def parse_node(unparsed: str) -> Node:
+def get_input():
+    with open("input.data", "r") as input_file:
+        return [line.strip() for line in input_file.readlines()]
+
+
+class Node(NamedTuple):
+    name: str
+    what: str
+    deps: list[str] = []
+
+
+def parse_node(unparsed: str):
     """
     dependents need to be resolved
     dependents can resolve to a scalar or another dependent
@@ -29,21 +33,34 @@ def parse_node(unparsed: str) -> Node:
     - NOT: [ACTION] dependent -> output
     - [NO ACTION]: dependent -> output
     """
-    pass
+
+    tokens = unparsed.split()
+    acions_with_two_dependents = "RSHIFT LSHIFT AND OR".split()
+    node = Node()
+    node.name = tokens.pop()
+    if any(action in tokens for action in acions_with_two_dependents):
+        node.deps.append(tokens[0])
+        node.what = tokens[1]
+        node.deps.append(tokens[2])
+    elif "NOT" in tokens:
+        node.what = "NOT"
+        node.deps.append(tokens[1])
+    else:
+        node.what = "NO-ACTION"
+        node.deps.append = tokens[0]
+    return node
 
 
-def part1():
+
+def part1(input: list[str]):
     print("\n~~~ Part 1 ~~~\n")
-    with open("input.data", "r") as input_file:
-        pass
 
 
-def part2():
+def part2(input: list[str]):
     print("\n~~~ Part 2 ~~~\n")
-    with open("input.data", "r") as input_file:
-        pass
 
 
 if __name__ == "__main__":
-    part1()
-    part2()
+    data = get_input()
+    part1(input=data)
+    part2(input=data)
