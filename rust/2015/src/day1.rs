@@ -1,6 +1,6 @@
 use std::fs::read_to_string;
 
-fn main() {
+pub fn solution() {
     let input = read_to_string("inputs/2015/day1.data")
                 .expect("unable to read file");
     let iter = input.trim().split("");
