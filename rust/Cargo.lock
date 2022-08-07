@@ -3,13 +3,5 @@
 version = 3
 
 [[package]]
-name = "main"
-version = "0.1.0"
-
-[[package]]
-name = "util"
-version = "0.1.0"
-
-[[package]]
-name = "workspace2015"
+name = "rust"
 version = "0.1.0"
