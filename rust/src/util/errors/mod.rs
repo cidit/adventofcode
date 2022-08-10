@@ -1,5 +1,6 @@
 use std::error::Error;
 use std::fmt;
+use thiserror::Error;
 
 #[derive(Debug)]
 pub struct KeyMissingError<'a> {
@@ -20,32 +21,15 @@ impl fmt::Display for KeyMissingError<'_> {
 
 impl Error for KeyMissingError<'_> {}
 
-#[derive(Debug)]
-pub struct ArgsParsingError {}
 
-impl fmt::Display for ArgsParsingError {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        write!(fmt, "Args in wront format")
+#[derive(Error, Debug)]
+pub enum KeyParsingError {
+    #[error("Could'nt parse '{0}'. Expected a i32 value or a wilcard ('*') character.")]
+    CantParse(String),
+    #[error("expected exactly {expected} keys, found {found}. orignal string: {original_string}")]
+    IncorrectNumKeys {
+        expected: usize,
+        found: usize,
+        original_string: String
     }
 }
-
-impl Error for ArgsParsingError {}
-
-#[derive(Debug)]
-struct KeyParsingError {
-    original_string: String,
-}
-
-impl KeyParsingError {
-    fn new(key: &str) -> Self {
-        Self { original_string: key.to_owned() }
-    }
-}
-
-impl fmt::Display for KeyParsingError {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        write!(fmt, "trouble parsing '{}'", self.original_string)
-    }
-}
-
-impl Error for KeyParsingError {}
