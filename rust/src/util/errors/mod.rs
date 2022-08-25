@@ -2,25 +2,26 @@ use std::error::Error;
 use std::fmt;
 use thiserror::Error;
 
+use crate::util::model::SolutionKey;
+
 #[derive(Debug)]
-pub struct KeyMissingError<'a> {
-    key: &'a str,
+pub struct KeyMissingError {
+    key: SolutionKey,
 }
 
-impl<'a> KeyMissingError<'a> {
-    pub fn new(key: &'a str) -> Self {
+impl KeyMissingError {
+    pub fn new(key: SolutionKey) -> Self {
         Self { key }
     }
 }
 
-impl fmt::Display for KeyMissingError<'_> {
+impl fmt::Display for KeyMissingError {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         write!(fmt, "Key missing: {}", self.key)
     }
 }
 
-impl Error for KeyMissingError<'_> {}
-
+impl Error for KeyMissingError {}
 
 #[derive(Error, Debug)]
 pub enum KeyParsingError {
@@ -30,6 +31,6 @@ pub enum KeyParsingError {
     IncorrectNumKeys {
         expected: usize,
         found: usize,
-        original_string: String
-    }
+        original_string: String,
+    },
 }

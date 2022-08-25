@@ -1,7 +1,20 @@
-use std::error::Error;
+pub fn p1(input: &str) -> String {
+    let input = parse(input);
 
-pub fn solution(input: &str) -> Result<Vec<String>, Box<dyn Error>> {
-    let input = parse(input)?;
+    let floor: i32 = input
+        .iter()
+        .map(|x| match x {
+            '(' => 1,
+            ')' => -1,
+            _ => 0,
+        })
+        .sum();
+
+    floor.to_string()
+}
+
+pub fn p2(input: &str) -> String {
+    let input = parse(input);
 
     let mut floor = 0;
     let mut basement_instruction_number: Option<i32> = None;
@@ -17,20 +30,12 @@ pub fn solution(input: &str) -> Result<Vec<String>, Box<dyn Error>> {
         };
     }
 
-    let convert_to_string = |input: Option<i32>| match input {
+    match basement_instruction_number {
         Some(x) => x.to_string(),
         None => "Santa never goes to the basement".to_string(),
-    };
-
-    Ok(vec![
-        format!("part 1 answer: {}", floor),
-        format!(
-            "part 2 answer: {}",
-            convert_to_string(basement_instruction_number)
-        ),
-    ])
+    }
 }
 
-fn parse(input: &str) -> Result<Vec<char>, Box<dyn Error>> {
-    return Ok(input.trim().chars().collect::<Vec<_>>());
+fn parse(input: &str) -> Vec<char> {
+    input.trim().chars().collect::<Vec<_>>()
 }
