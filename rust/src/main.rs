@@ -1,5 +1,6 @@
 mod editions;
 mod util;
+mod solution;
 
 use std::io::Read;
 

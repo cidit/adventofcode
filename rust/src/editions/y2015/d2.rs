@@ -23,7 +23,7 @@ struct BoxDim(i32, i32, i32);
 
 impl BoxDim {
     fn area(&self) -> i32 {
-        self.sides().iter().map(|(a, b)| 2 * a * b)
+        self.sides().iter().map(|(&a, &b)| 2 * a * b).sum::<i32>()
     }
 
     fn sides(&self) -> [(&i32, &i32); 3] {
