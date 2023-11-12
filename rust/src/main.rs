@@ -1,6 +1,6 @@
 mod editions;
 mod util;
-mod solution;
+mod aoc_framework;
 
 use std::io::Read;
 
